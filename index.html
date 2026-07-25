@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#111827" />
+  <meta name="description" content="Control de pedidos, cocina y despacho de menús." />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <title>Control de Menús</title>
+  <style>
+    :root {
+      --bg:#f3f4f6; --card:#fff; --text:#111827; --muted:#6b7280; --line:#e5e7eb;
+      --primary:#111827; --accent:#2563eb; --ok:#15803d; --warn:#b45309; --danger:#b91c1c;
+      --radius:16px;
+    }
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+    button,input,select,textarea{font:inherit}
+    .app{max-width:760px;margin:0 auto;min-height:100vh;padding-bottom:86px}
+    header{position:sticky;top:0;z-index:20;background:rgba(243,244,246,.96);backdrop-filter:blur(8px);padding:14px 14px 8px;border-bottom:1px solid var(--line)}
+    h1{font-size:21px;margin:0 0 8px}.sub{font-size:13px;color:var(--muted)}
+    main{padding:12px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.03)}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+    label{display:block;font-weight:700;font-size:13px;margin-bottom:6px}
+    input,select,textarea{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:12px;background:white}
+    textarea{min-height:72px;resize:vertical}.field{margin-bottom:12px}
+    .seg{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.seg.three{grid-template-columns:repeat(3,1fr)}
+    .seg button,.chip,.nav button,.filter-btn{border:1px solid #cbd5e1;background:white;border-radius:12px;padding:11px 10px;font-weight:800;cursor:pointer}
+    .seg button.active,.chip.active,.filter-btn.active{background:var(--primary);color:white;border-color:var(--primary)}
+    .primary{width:100%;border:0;background:var(--primary);color:white;border-radius:14px;padding:14px;font-weight:900;cursor:pointer}
+    .secondary{border:1px solid #cbd5e1;background:white;border-radius:12px;padding:10px 12px;font-weight:800;cursor:pointer}
+    .danger{color:var(--danger)}
+    .nav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:white;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);padding:8px max(8px, env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));gap:6px}
+    .nav button{padding:10px 4px;font-size:12px}.nav button.active{background:var(--primary);color:white;border-color:var(--primary)}
+    .view{display:none}.view.active{display:block}
+    .chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}.chip{white-space:nowrap;padding:9px 11px}
+    .count{font-weight:900}.muted{color:var(--muted)}
+    .order{display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line);padding:11px 2px;cursor:pointer}
+    .order:last-child{border-bottom:0}.order.done{opacity:.45;text-decoration:line-through}
+    .check{width:24px;height:24px;border:2px solid #9ca3af;border-radius:7px;display:grid;place-items:center;flex:0 0 auto;font-weight:900}
+    .order.done .check{background:var(--ok);color:white;border-color:var(--ok)}
+    .order-main{min-width:0;flex:1}.order-line{font-size:15px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .order-sub{font-size:13px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .badge{font-size:11px;padding:4px 7px;border-radius:999px;background:#e5e7eb;white-space:nowrap}.priority{background:#fef3c7;color:#92400e}
+    .section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.section-title h2{font-size:17px;margin:0}
+    .kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.kpi{background:#f9fafb;border:1px solid var(--line);border-radius:12px;padding:12px}.kpi b{display:block;font-size:24px}
+    .totals h3{font-size:15px;margin:14px 0 6px}.totals-row{display:flex;justify-content:space-between;border-bottom:1px dashed var(--line);padding:7px 0}
+    .empty{text-align:center;color:var(--muted);padding:28px 8px}
+    .toolbar{display:flex;gap:8px;flex-wrap:wrap}.toolbar .secondary{flex:1}
+    .hidden{display:none!important}.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:90px;background:#111827;color:white;padding:11px 16px;border-radius:999px;z-index:100;opacity:0;pointer-events:none;transition:.2s}.toast.show{opacity:1}
+    @media (max-width:480px){.grid,.grid3{grid-template-columns:1fr}.order-line{font-size:14px}.card{padding:12px}.kpis{grid-template-columns:repeat(2,1fr)}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <h1>Control de menús</h1>
+    <div class="sub" id="todayLabel"></div>
+  </header>
+
+  <main>
+    <section id="view-register" class="view active">
+      <div class="card">
+        <div class="section-title"><h2>Nuevo pedido</h2><span class="badge" id="zoneBadge">Zona automática</span></div>
+
+        <div class="field">
+          <label for="store">Tienda</label>
+          <input id="store" list="storesList" placeholder="Ej. 115AB" autocomplete="off" />
+          <datalist id="storesList"></datalist>
+        </div>
+
+        <div class="field">
+          <label>Cantidad</label>
+          <div class="seg three">
+            <button type="button" id="qtyMinus">−</button>
+            <button type="button" id="qtyValue" class="active">1</button>
+            <button type="button" id="qtyPlus">+</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Entrega</label>
+          <div class="seg" id="deliverySeg">
+            <button type="button" data-value="taper" class="active">Táper</button>
+            <button type="button" data-value="plato">Plato</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Tipo</label>
+          <div class="seg" id="saleTypeSeg">
+            <button type="button" data-value="completo" class="active">Menú completo</button>
+            <button type="button" data-value="solo">Segundo solo</button>
+          </div>
+        </div>
+
+        <div class="field" id="entryField">
+          <label for="entry">Entrada</label>
+          <select id="entry">
+            <option>Sopa de casa</option>
+            <option>Crema de ocopa</option>
+            <option>Ensalada fresca</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="dish">Fondo principal</label>
+          <select id="dish"></select>
+        </div>
+
+        <div class="field" id="proteinField">
+          <label for="protein">Acompañamiento / presa</label>
+          <select id="protein"></select>
+        </div>
+
+        <div class="field hidden" id="chickenCutField">
+          <label for="chickenCut">Preferencia de presa de pollo</label>
+          <select id="chickenCut">
+            <option value="">Pierna / sin preferencia</option>
+            <option>Pecho</option>
+            <option>Encuentro</option>
+            <option>Otra</option>
+          </select>
+        </div>
+
+        <div class="field" id="prepField">
+          <label for="prep">Preparación especial</label>
+          <select id="prep">
+            <option value="">Normal</option>
+            <option>Frita</option>
+            <option>Sancochada</option>
+          </select>
+        </div>
+
+        <div class="grid">
+          <div class="field">
+            <label><input type="checkbox" id="noRice" style="width:auto;margin-right:8px">Sin arroz</label>
+          </div>
+          <div class="field">
+            <label><input type="checkbox" id="priority" style="width:auto;margin-right:8px">Prioridad</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="notes">Observación</label>
+          <textarea id="notes" placeholder="Opcional"></textarea>
+        </div>
+
+        <button class="primary" id="saveOrder">Guardar pedido</button>
+      </div>
+
+      <div class="card">
+        <div class="section-title"><h2>Pedidos de hoy</h2><span class="count" id="ordersCount">0</span></div>
+        <div id="recentOrders"></div>
+      </div>
+    </section>
+
+    <section id="view-tapers" class="view">
+      <div class="card">
+        <div class="section-title"><h2>Táperes</h2><span class="count" id="taperPendingCount">0 pendientes</span></div>
+        <div class="chips" id="taperDishFilters"></div>
+        <div class="chips" id="taperProteinFilters" style="margin-top:8px"></div>
+      </div>
+      <div class="card"><div id="taperList"></div></div>
+    </section>
+
+    <section id="view-plates" class="view">
+      <div class="card">
+        <div class="section-title"><h2>Platos</h2><span class="count" id="platePendingCount">0 pendientes</span></div>
+        <div class="chips" id="zoneFilters">
+          <button class="chip active" data-zone="barranca">Barranca</button>
+          <button class="chip" data-zone="gamarra">Gamarra</button>
+          <button class="chip" data-zone="todos">Todos</button>
+        </div>
+      </div>
+      <div class="card"><div id="plateList"></div></div>
+    </section>
+
+    <section id="view-totals" class="view">
+      <div class="card">
+        <div class="section-title"><h2>Totales de hoy</h2></div>
+        <div class="kpis">
+          <div class="kpi"><span>Táperes grandes</span><b id="kpiTapers">0</b></div>
+          <div class="kpi"><span>Platos</span><b id="kpiPlates">0</b></div>
+          <div class="kpi"><span>Entradas en táper</span><b id="kpiEntryContainers">0</b></div>
+          <div class="kpi"><span>Segundo solo</span><b id="kpiSolo">0</b></div>
+        </div>
+        <div class="totals" id="totalsContent"></div>
+      </div>
+      <div class="card">
+        <div class="toolbar">
+          <button class="secondary" id="exportCsv">Exportar CSV</button>
+          <button class="secondary danger" id="clearDay">Borrar día</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="nav">
+    <button class="active" data-view="register">Registrar</button>
+    <button data-view="tapers">Táperes</button>
+    <button data-view="plates">Platos</button>
+    <button data-view="totals">Totales</button>
+  </nav>
+</div>
+<div id="toast" class="toast"></div>
+
+<script>
+const MENU = [
+  {name:'Locro de zapallo', type:'flex', proteins:['Bistec','Milanesa','Pechuga']},
+  {name:'Escabeche de pescado con camote', type:'closed', protein:'Pescado', components:['Camote']},
+  {name:'Tortilla de coliflor con papa', type:'closed', protein:'Tortilla de coliflor', components:['Papa']},
+  {name:'Ensalada de verduras cocidas', type:'flex', proteins:['Pechuga','Pescado']}
+];
+
+const KEY='menuAppOrdersV1';
+let orders = JSON.parse(localStorage.getItem(KEY) || '[]');
+let qty=1, delivery='taper', saleType='completo', taperDish='Todos', taperProtein='Todos', plateZone='barranca';
+
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const fmtDate=()=>new Intl.DateTimeFormat('es-PE',{weekday:'long',day:'numeric',month:'long'}).format(new Date());
+$('#todayLabel').textContent = fmtDate();
+
+function save(){ localStorage.setItem(KEY,JSON.stringify(orders)); renderAll(); }
+function toast(msg){ const el=$('#toast'); el.textContent=msg; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),1500); }
+function inferZone(store){ return store.trim().toUpperCase().endsWith('B') ? 'barranca' : 'gamarra'; }
+function shortEntry(o){ return o.saleType==='solo' ? 'Segundo solo' : o.entry; }
+function fullDish(o){ return o.protein ? `${o.dish} con ${o.protein}` : o.dish; }
+function compactDish(o){
+  const map={'Locro de zapallo':'Locro','Escabeche de pescado con camote':'Escabeche','Tortilla de coliflor con papa':'Tortilla','Ensalada de verduras cocidas':'Verduras'};
+  let base=map[o.dish]||o.dish;
+  if(o.protein && !o.dish.toLowerCase().includes(o.protein.toLowerCase())) base += ` + ${o.protein}`;
+  return base;
+}
+function setSeg(container,value){
+  container.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.value===value));
+}
+
+function initMenu(){
+  $('#dish').innerHTML = MENU.map((m,i)=>`<option value="${i}">${m.name}</option>`).join('');
+  updateDishOptions();
+}
+function updateDishOptions(){
+  const m=MENU[Number($('#dish').value)||0];
+  const pf=$('#proteinField');
+  if(m.type==='flex'){
+    pf.classList.remove('hidden');
+    $('#protein').innerHTML=m.proteins.map(p=>`<option>${p}</option>`).join('');
+  }else{
+    pf.classList.add('hidden');
+    $('#protein').innerHTML=`<option>${m.protein||''}</option>`;
+  }
+  updateConditionalFields();
+}
+function updateConditionalFields(){
+  const m=MENU[Number($('#dish').value)||0];
+  const protein=m.type==='flex'?$('#protein').value:m.protein;
+  $('#chickenCutField').classList.toggle('hidden',protein!=='Pollo');
+}
+
+$('#dish').addEventListener('change',updateDishOptions);
+$('#protein').addEventListener('change',updateConditionalFields);
+$('#store').addEventListener('input',()=>{
+  const v=$('#store').value;
+  $('#zoneBadge').textContent=v? (inferZone(v)==='barranca'?'Barranca':'Gamarra'):'Zona automática';
+});
+$('#qtyMinus').onclick=()=>{qty=Math.max(1,qty-1);$('#qtyValue').textContent=qty};
+$('#qtyPlus').onclick=()=>{qty++;$('#qtyValue').textContent=qty};
+$('#deliverySeg').onclick=e=>{if(e.target.dataset.value){delivery=e.target.dataset.value;setSeg($('#deliverySeg'),delivery)}};
+$('#saleTypeSeg').onclick=e=>{if(e.target.dataset.value){saleType=e.target.dataset.value;setSeg($('#saleTypeSeg'),saleType);$('#entryField').classList.toggle('hidden',saleType==='solo')}};
+
+$('#saveOrder').onclick=()=>{
+  const store=$('#store').value.trim().toUpperCase();
+  if(!store){toast('Escribe la tienda');$('#store').focus();return;}
+  const m=MENU[Number($('#dish').value)||0];
+  const protein=m.type==='flex'?$('#protein').value:m.protein;
+  const base={
+    store, zone:inferZone(store), delivery, saleType,
+    entry:saleType==='completo'?$('#entry').value:'',
+    dish:m.name, protein, components:m.components||[],
+    chickenCut:protein==='Pollo'?$('#chickenCut').value:'',
+    prep:$('#prep').value, noRice:$('#noRice').checked,
+    priority:$('#priority').checked, notes:$('#notes').value.trim(),
+    served:false, packed:false, createdAt:Date.now()
+  };
+  for(let i=0;i<qty;i++) orders.push({...base,id:crypto.randomUUID?crypto.randomUUID():String(Date.now()+i),createdAt:Date.now()+i});
+  save();
+  $('#notes').value=''; $('#noRice').checked=false; $('#priority').checked=false; qty=1; $('#qtyValue').textContent=1;
+  toast('Pedido guardado');
+};
+
+function toggleServed(id){ const o=orders.find(x=>x.id===id); if(o){o.served=!o.served;save();} }
+function deleteOrder(id){ if(confirm('¿Eliminar este pedido?')){orders=orders.filter(o=>o.id!==id);save();} }
+
+function renderRecent(){
+  $('#ordersCount').textContent=orders.length;
+  const list=[...orders].sort((a,b)=>b.createdAt-a.createdAt).slice(0,12);
+  $('#recentOrders').innerHTML=list.length?list.map(o=>`
+    <div class="order" data-id="${o.id}">
+      <div class="order-main">
+        <div class="order-line">${o.store} · ${compactDish(o)}</div>
+        <div class="order-sub">${o.delivery==='taper'?'Táper':'Plato'} · ${shortEntry(o)}${o.noRice?' · Sin arroz':''}${o.chickenCut?' · '+o.chickenCut:''}</div>
+      </div>
+      <button class="secondary danger delete" data-id="${o.id}">×</button>
+    </div>`).join(''):'<div class="empty">Todavía no hay pedidos.</div>';
+  $$('#recentOrders .delete').forEach(b=>b.onclick=e=>{e.stopPropagation();deleteOrder(b.dataset.id)});
+}
+
+function renderTaperFilters(){
+  const tapers=orders.filter(o=>o.delivery==='taper');
+  const dishes=['Todos',...new Set(tapers.map(o=>o.dish))];
+  $('#taperDishFilters').innerHTML=dishes.map(d=>`<button class="chip ${d===taperDish?'active':''}" data-dish="${d}">${d==='Todos'?'Todos':d.replace(' de pescado con camote','').replace(' de coliflor con papa','').replace(' de zapallo','').replace('Ensalada de verduras cocidas','Verduras')}</button>`).join('');
+  if(!dishes.includes(taperDish)) taperDish='Todos';
+  const filtered=tapers.filter(o=>taperDish==='Todos'||o.dish===taperDish);
+  const proteins=['Todos',...new Set(filtered.map(o=>o.protein).filter(Boolean))];
+  if(!proteins.includes(taperProtein)) taperProtein='Todos';
+  $('#taperProteinFilters').innerHTML=proteins.map(p=>`<button class="chip ${p===taperProtein?'active':''}" data-protein="${p}">${p}</button>`).join('');
+  $$('#taperDishFilters button').forEach(b=>b.onclick=()=>{taperDish=b.dataset.dish;taperProtein='Todos';renderTapers()});
+  $$('#taperProteinFilters button').forEach(b=>b.onclick=()=>{taperProtein=b.dataset.protein;renderTapers()});
+}
+function renderTapers(){
+  renderTaperFilters();
+  let list=orders.filter(o=>o.delivery==='taper'&&(taperDish==='Todos'||o.dish===taperDish)&&(taperProtein==='Todos'||o.protein===taperProtein));
+  list.sort((a,b)=>Number(a.served)-Number(b.served)||a.createdAt-b.createdAt);
+  const pending=list.filter(o=>!o.served).length;
+  $('#taperPendingCount').textContent=`${pending} pendientes`;
+  $('#taperList').innerHTML=list.length?list.map(o=>`
+    <div class="order ${o.served?'done':''}" data-id="${o.id}">
+      <div class="check">${o.served?'✓':''}</div>
+      <div class="order-main">
+        <div class="order-line">${o.store} · ${taperDish==='Todos'?compactDish(o):''}${taperDish==='Todos'?' · ':''}${shortEntry(o)}</div>
+        <div class="order-sub">${o.noRice?'Sin arroz · ':''}${o.chickenCut?o.chickenCut+' · ':''}${o.prep&&o.prep!=='Normal'?o.prep+' · ':''}${o.notes||''}</div>
+      </div>
+      ${o.priority?'<span class="badge priority">Prioridad</span>':''}
+    </div>`).join(''):'<div class="empty">No hay táperes con este filtro.</div>';
+  $$('#taperList .order').forEach(el=>el.onclick=()=>toggleServed(el.dataset.id));
+}
+
+function renderPlates(){
+  let list=orders.filter(o=>o.delivery==='plato'&&(plateZone==='todos'||o.zone===plateZone));
+  list.sort((a,b)=>Number(b.priority)-Number(a.priority)||Number(a.served)-Number(b.served)||a.createdAt-b.createdAt);
+  const pending=list.filter(o=>!o.served).length;
+  $('#platePendingCount').textContent=`${pending} pendientes`;
+  $('#plateList').innerHTML=list.length?list.map(o=>`
+    <div class="order ${o.served?'done':''}" data-id="${o.id}">
+      <div class="check">${o.served?'✓':''}</div>
+      <div class="order-main">
+        <div class="order-line">${o.store} · ${compactDish(o)} · ${shortEntry(o)}</div>
+        <div class="order-sub">${o.noRice?'Sin arroz · ':''}${o.chickenCut?o.chickenCut+' · ':''}${o.notes||''}</div>
+      </div>
+      ${o.priority?'<span class="badge priority">Primero</span>':''}
+    </div>`).join(''):'<div class="empty">No hay platos en esta zona.</div>';
+  $$('#plateList .order').forEach(el=>el.onclick=()=>toggleServed(el.dataset.id));
+}
+$$('#zoneFilters button').forEach(b=>b.onclick=()=>{plateZone=b.dataset.zone;$$('#zoneFilters button').forEach(x=>x.classList.toggle('active',x===b));renderPlates()});
+
+function groupCount(arr,keyFn){
+  const m={}; arr.forEach(x=>{const k=keyFn(x); if(k)m[k]=(m[k]||0)+1}); return m;
+}
+function rows(obj){ return Object.entries(obj).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="totals-row"><span>${k}</span><b>${v}</b></div>`).join('') || '<div class="muted">Sin datos</div>'; }
+function renderTotals(){
+  const tapers=orders.filter(o=>o.delivery==='taper');
+  const plates=orders.filter(o=>o.delivery==='plato');
+  $('#kpiTapers').textContent=tapers.length;
+  $('#kpiPlates').textContent=plates.length;
+  $('#kpiEntryContainers').textContent=tapers.filter(o=>o.saleType==='completo').length;
+  $('#kpiSolo').textContent=orders.filter(o=>o.saleType==='solo').length;
+  const entries=groupCount(orders.filter(o=>o.saleType==='completo'),o=>o.entry);
+  const dishes=groupCount(orders,o=>o.dish);
+  const proteins=groupCount(orders,o=>o.protein);
+  const components={}; orders.forEach(o=>(o.components||[]).forEach(c=>components[c]=(components[c]||0)+1));
+  const specials=groupCount(orders,o=>o.prep&&o.prep!=='Normal'?`${o.protein}: ${o.prep}`:'');
+  const cuts=groupCount(orders,o=>o.chickenCut);
+  $('#totalsContent').innerHTML=`
+    <h3>Entradas</h3>${rows(entries)}
+    <h3>Fondos principales</h3>${rows(dishes)}
+    <h3>Presas / acompañamientos</h3>${rows(proteins)}
+    <h3>Componentes para pelar o preparar</h3>${rows(components)}
+    <h3>Preparaciones especiales</h3>${rows(specials)}
+    ${Object.keys(cuts).length?`<h3>Preferencias de pollo</h3>${rows(cuts)}`:''}
+    <h3>Otros</h3>
+    <div class="totals-row"><span>Sin arroz</span><b>${orders.filter(o=>o.noRice).length}</b></div>`;
+}
+function renderStores(){
+  const stores=[...new Set(orders.map(o=>o.store))].sort();
+  $('#storesList').innerHTML=stores.map(s=>`<option value="${s}"></option>`).join('');
+}
+function renderAll(){renderRecent();renderTapers();renderPlates();renderTotals();renderStores()}
+
+$$('.nav button').forEach(b=>b.onclick=()=>{
+  $$('.nav button').forEach(x=>x.classList.toggle('active',x===b));
+  $$('.view').forEach(v=>v.classList.remove('active'));
+  $(`#view-${b.dataset.view}`).classList.add('active');
+  renderAll();
+});
+
+$('#exportCsv').onclick=()=>{
+  const head=['tienda','zona','entrega','tipo','entrada','fondo','acompanamiento','presa_pollo','preparacion','sin_arroz','prioridad','servido','observacion'];
+  const lines=[head.join(',')].concat(orders.map(o=>[o.store,o.zone,o.delivery,o.saleType,o.entry,o.dish,o.protein,o.chickenCut,o.prep,o.noRice,o.priority,o.served,o.notes].map(v=>`"${String(v??'').replaceAll('"','""')}"`).join(',')));
+  const blob=new Blob([lines.join('\n')],{type:'text/csv;charset=utf-8'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='pedidos_menu.csv'; a.click(); URL.revokeObjectURL(a.href);
+};
+$('#clearDay').onclick=()=>{if(confirm('¿Borrar todos los pedidos de hoy?')){orders=[];save();toast('Día borrado')}};
+
+initMenu();renderAll();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(console.error));
+}
+</script>
+</body>
+</html>
