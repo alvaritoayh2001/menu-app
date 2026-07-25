@@ -94,7 +94,7 @@ let qty=1,delivery='taper',saleType='completo',chosenZone='Gamarra',prodTab='dis
 function saveDB(render=true){localStorage.setItem(DB_KEY,JSON.stringify(db));if(render)renderAll()}
 function toast(m){const e=$('#toast');e.textContent=m;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),1400)}
 function esc(s=''){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
-function inferZone(s){const raw=String(s||'').trim();const u=raw.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ');const barranca=['CELIA','CARLOS','CHAMA EVER','CHAMAEVER','HILOS','ROSITA'];const gamarra=['CHOMPA','GISSET','TOMBO','NICHI','JOSE'];const fuera=['MEZANINE','TORRE','CANEPA','CHAVEZ','ROSA','LEO'];if(barranca.includes(u))return 'Barranca';if(gamarra.includes(u))return 'Gamarra';if(fuera.some(n=>u===n||u.startsWith(n+' ')))return 'Fuera';const compact=u.replace(/\s+/g,'');if(/^\d+[A-Z]{2}$/.test(compact))return 'Barranca';if(/^\d+[A-Z]$/.test(compact))return 'Gamarra';return 'Gamarra'}
+function inferZone(s){const raw=String(s||'').trim();const u=raw.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ');const barranca=['CELIA','CARLOS','CHAMA EVER','CHAMAEVER','HILOS','ROSITA'];const gamarra=['CHOMPA','GISSET','TOMBO','NICHI','JOSE'];const fuera=['MEZANINE','TORRE','CANEPA','CHAVEZ','ROSA','LEO'];if(barranca.includes(u))return 'Barranca';if(gamarra.includes(u))return 'Gamarra';if(fuera.some(n=>u===n||u.startsWith(n+' ')))return 'Fuera';const compact=u.replace(/\s+/g,'');if(/[A-Z]{2}$/.test(compact))return 'Barranca';if(/[A-Z]$/.test(compact))return 'Gamarra';return 'Gamarra'}
 function setZone(z){chosenZone=z;$$('#zoneSeg button').forEach(b=>b.classList.toggle('active',b.dataset.zone===z));$('#zoneBadge').textContent=z}
 function getEntry(id){return db.catalog.entries.find(x=>x.id===id)}function getProtein(id){return db.catalog.proteins.find(x=>x.id===id)}function getDish(id){return db.catalog.dishes.find(x=>x.id===id)}
 function daily(date){return db.dailyMenus[date]||{entryIds:[],dishIds:[]}}
@@ -109,14 +109,17 @@ function ensureTodayMenu(){const d='2026-07-25';const add=(list,obj)=>{if(!list.
  add(db.catalog.proteins,{id:'p_bisteck_hoy',name:'Bisteck',defaultPrep:'frito',altPreps:[],active:true});
  add(db.catalog.proteins,{id:'p_pollo_hoy',name:'Pollo frito',defaultPrep:'frito',altPreps:[],active:true});
  add(db.catalog.proteins,{id:'p_pescado_hoy',name:'Pescado',defaultPrep:'frito',altPreps:['sancochado'],active:true});
+ add(db.catalog.proteins,{id:'p_pechuga_hoy',name:'Pechuga',defaultPrep:'frita',altPreps:['sancochada'],active:true});
  add(db.catalog.proteins,{id:'p_trucha_hoy',name:'Trucha',defaultPrep:'frita',altPreps:[],active:true});
  add(db.catalog.dishes,{id:'d_causa_hoy',name:'Causa de pollo con arroz',type:'closed',proteinIds:[],fixedProteinId:'',components:['Arroz'],fixedPrep:'',active:true});
  add(db.catalog.dishes,{id:'d_arroz_verde_hoy',name:'Arroz verde',type:'flex',proteinIds:['p_pollo_hoy','p_bisteck_hoy','p_pescado_hoy'],fixedProteinId:'',components:[],fixedPrep:'',active:true});
- add(db.catalog.dishes,{id:'d_crema_rocoto_hoy',name:'Crema de rocoto',type:'flex',proteinIds:['p_bisteck_hoy','p_pollo_hoy','p_pescado_hoy'],fixedProteinId:'',components:[],fixedPrep:'',active:true});
+ add(db.catalog.dishes,{id:'d_crema_rocoto_hoy',name:'Crema de rocoto',type:'flex',proteinIds:['p_bisteck_hoy','p_pollo_hoy','p_pescado_hoy','p_pechuga_hoy'],fixedProteinId:'',components:[],fixedPrep:'',active:true});
  add(db.catalog.dishes,{id:'d_verduras_hoy',name:'Verduras cocidas',type:'flex',proteinIds:['p_pollo_hoy','p_pescado_hoy','p_bisteck_hoy'],fixedProteinId:'',components:[],fixedPrep:'',active:true});
  add(db.catalog.dishes,{id:'d_trucha_hoy',name:'Trucha con papa y choclo',type:'closed',proteinIds:[],fixedProteinId:'p_trucha_hoy',components:['Papa','Choclo'],fixedPrep:'frita',active:true,stockAlias:{kind:'protein',id:'p_trucha_hoy'}});
  // Corrige catálogos ya guardados por versiones anteriores sin borrar pedidos ni histórico.
- const verduras=db.catalog.dishes.find(x=>x.id==='d_verduras_hoy');if(verduras)verduras.name='Verduras cocidas';
+ const verduras=db.catalog.dishes.find(x=>x.id==='d_verduras_hoy');if(verduras){verduras.name='Verduras cocidas';verduras.proteinIds=[...new Set([...(verduras.proteinIds||[]),'p_pechuga_hoy','p_pescado_hoy'])]}
+ const cremaRocoto=db.catalog.dishes.find(x=>x.id==='d_crema_rocoto_hoy');if(cremaRocoto)cremaRocoto.proteinIds=[...new Set([...(cremaRocoto.proteinIds||[]),'p_bisteck_hoy','p_pollo_hoy','p_pescado_hoy','p_pechuga_hoy'])];
+ const arrozVerde=db.catalog.dishes.find(x=>x.id==='d_arroz_verde_hoy');if(arrozVerde)arrozVerde.proteinIds=[...new Set([...(arrozVerde.proteinIds||[]),'p_bisteck_hoy','p_pollo_hoy','p_pescado_hoy','p_pechuga_hoy'])];
  const trucha=db.catalog.dishes.find(x=>x.id==='d_trucha_hoy');if(trucha){trucha.name='Trucha con papa y choclo';trucha.fixedProteinId='p_trucha_hoy';trucha.components=['Papa','Choclo'];trucha.stockAlias={kind:'protein',id:'p_trucha_hoy'}}
  if(!db.dailyMenus[d]||!db.dailyMenus[d].todaySeeded)db.dailyMenus[d]={entryIds:['e_rocoto','e_sopa_casa','e_ens_fresca'],dishIds:['d_causa_hoy','d_arroz_verde_hoy','d_crema_rocoto_hoy','d_verduras_hoy','d_trucha_hoy'],todaySeeded:true};
  if(!db.productionPlans[d])db.productionPlans[d]={dishes:{},proteins:{}};
