@@ -4,15 +4,21 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111827"><meta name="description" content="Pedidos, producción, menú diario e historial">
 <link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icon-192.png">
-<title>Control de Menús v0.3.9</title>
+<title>Control de Menús v1.0.0</title>
 <style>
 :root{--bg:#f3f4f6;--card:#fff;--text:#111827;--muted:#6b7280;--line:#e5e7eb;--primary:#111827;--blue:#2563eb;--ok:#15803d;--warn:#b45309;--danger:#b91c1c;--r:16px}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}button,input,select,textarea{font:inherit}.app{max-width:900px;margin:auto;min-height:100vh;padding-bottom:86px}header{position:sticky;top:0;z-index:20;background:rgba(243,244,246,.96);backdrop-filter:blur(8px);padding:13px 14px 9px;border-bottom:1px solid var(--line)}h1{font-size:20px;margin:0}.sub{font-size:13px;color:var(--muted);margin-top:3px}main{padding:12px}.view{display:none}.view.active{display:block}.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.03)}.section{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:10px}.section h2,.section h3{margin:0;font-size:17px}.field{margin-bottom:12px}label{display:block;font-size:13px;font-weight:800;margin-bottom:6px}input,select,textarea{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:12px;background:#fff}textarea{min-height:68px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.seg{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.seg.three{grid-template-columns:repeat(3,1fr)}button{cursor:pointer}.seg button,.chip,.secondary,.mini{border:1px solid #cbd5e1;background:#fff;border-radius:12px;padding:10px;font-weight:800}.seg button.active,.chip.active{background:var(--primary);border-color:var(--primary);color:#fff}.primary{width:100%;border:0;background:var(--primary);color:#fff;border-radius:14px;padding:14px;font-weight:900}.blue{background:var(--blue)}.danger{color:var(--danger)}.success{color:var(--ok)}.muted{color:var(--muted)}.hidden{display:none!important}.nav{position:fixed;bottom:0;left:0;right:0;z-index:30;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px 7px calc(7px + env(safe-area-inset-bottom))}.nav button{border:0;background:#fff;border-radius:11px;padding:9px 2px;font-size:11px;font-weight:800}.nav button.active{background:var(--primary);color:#fff}.chips{display:flex;gap:8px;overflow:auto;padding-bottom:3px}.chip{white-space:nowrap}.badge{font-size:11px;padding:4px 7px;border-radius:999px;background:#e5e7eb}.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.kpi{background:#f9fafb;border:1px solid var(--line);border-radius:12px;padding:10px}.kpi b{display:block;font-size:22px}.row{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line)}.row:last-child{border:0}.order{display:flex;gap:10px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)}.order:last-child{border:0}.check{width:25px;height:25px;border:2px solid #9ca3af;border-radius:7px;display:grid;place-items:center;flex:0 0 auto}.order.done{opacity:.48;text-decoration:line-through}.order.done .check{background:var(--ok);color:#fff;border-color:var(--ok)}.grow{flex:1;min-width:0}.strong{font-weight:900}.small{font-size:12px}.empty{text-align:center;color:var(--muted);padding:24px 8px}.tabs{display:flex;gap:7px;overflow:auto;margin-bottom:10px}.tab{border:1px solid #cbd5e1;background:#fff;padding:9px 11px;border-radius:999px;font-weight:800;white-space:nowrap}.tab.active{background:var(--primary);color:#fff}.item-card{border:1px solid var(--line);border-radius:13px;padding:11px;margin-bottom:8px}.item-actions{display:flex;gap:7px;margin-top:8px}.item-actions button{flex:1}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.toolbar button{flex:1}.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:91px;background:#111827;color:#fff;padding:11px 16px;border-radius:999px;opacity:0;z-index:99;pointer-events:none;transition:.2s}.toast.show{opacity:1}.note{background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:10px;font-size:13px;margin-bottom:12px}.warn{background:#fffbeb;border-color:#fde68a}.date-switch{display:flex;gap:8px;align-items:center}.date-switch input{max-width:180px}.checkbox-list{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}.checkline{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:11px;padding:9px}.checkline input{width:auto}.details{font-size:12px;color:var(--muted);margin-top:3px}.pill{display:inline-block;padding:3px 7px;border-radius:999px;background:#eef2ff;font-size:11px;margin:2px 3px 0 0}.right{text-align:right}.fold{border:1px solid var(--line);border-radius:13px;margin-bottom:9px;background:#fff;overflow:hidden}.fold summary{list-style:none;cursor:pointer;padding:13px;font-weight:900;display:flex;justify-content:space-between;gap:10px}.fold summary::-webkit-details-marker{display:none}.fold summary:before{content:"▶";font-size:12px;margin-right:8px}.fold[open] summary:before{content:"▼"}.fold-body{padding:0 13px 10px;border-top:1px solid var(--line)}.stock-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.stock-card{border:1px solid var(--line);border-radius:13px;padding:11px;background:#fff}.stock-card input{font-size:20px;font-weight:900;text-align:center}.stock-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}.stock-meta div{background:#f9fafb;border-radius:9px;padding:7px;text-align:center;font-size:11px}.stock-meta b{display:block;font-size:17px}.quick{display:grid;grid-template-columns:44px 1fr 44px;gap:6px;align-items:center}.quick button{border:1px solid #cbd5e1;background:#fff;border-radius:10px;padding:9px;font-weight:900}
 @media(max-width:620px){.grid,.grid3{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}.checkbox-list{grid-template-columns:1fr}.nav button{font-size:10px}.card{padding:12px}}
+.cu-kpi{display:flex;gap:10px;margin-top:8px;flex-wrap:wrap}.cu-kpi .kpi{flex:1;min-width:96px}.cu-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.order.acc{flex-wrap:wrap}.order.acc .samt{font-weight:800;margin-left:auto}.atag{font-size:11px;font-weight:800;padding:1px 7px;border-radius:99px;margin-left:8px}.atag.ok{background:#dcfce7;color:#15803d}.atag.am{background:#fef3c7;color:#b45309}
+.order.acc.parcial .check{background:#b45309;border-color:#b45309;color:#fff}
+.acc-detail{flex-basis:100%;padding:8px 0 4px 37px;font-size:14px}.acc-detail .line{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dashed var(--line);color:#374151}
+.cu-pay{margin-top:10px;background:#f9fafb;border:1px solid var(--line);border-radius:11px;padding:10px}.cu-pay label{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase}.cu-row{display:flex;gap:7px;margin-top:7px}.cu-row input{flex:1;min-width:0;padding:10px;border:1px solid #cbd5e1;border-radius:9px;font-size:15px}
+.mini.ok{background:#15803d;color:#fff;border-color:#15803d}.cu-res{margin-top:8px;font-weight:800}.cu-res.vuelto{color:#2563eb}.cu-res.saldo{color:#b45309}
 </style>
 </head>
 <body><div class="app">
-<header><h1>Control de menús <span class="badge">v0.3.9</span></h1><div class="sub" id="headerSub"></div></header>
+<header><h1>Control de menús <span class="badge">v1.0.0</span></h1><div class="sub" id="headerSub"></div></header>
 <main>
 <section class="view active" id="view-pedidos">
   <div id="noMenuNotice" class="note warn hidden">El menú de esta fecha no está configurado. Ve a <b>Menú</b> y elige las opciones del día.</div>
@@ -29,7 +35,7 @@
     <div class="grid"><label class="checkline"><input type="checkbox" id="noRice"> Sin arroz</label><label class="checkline"><input type="checkbox" id="priority"> Prioridad</label></div>
     <div class="field" style="margin-top:12px"><label>Observación</label><textarea id="notes" placeholder="Opcional"></textarea></div>
     <button class="primary" id="saveOrder">Guardar pedido</button><button class="secondary" style="width:100%;margin-top:8px" id="saveAndContinue">Guardar y añadir otra variante</button>
-    <button class="secondary" style="width:100%;margin-top:8px" id="loadSimulation">Cargar simulación del cuaderno de ayer</button>
+    
   </div>
   <div class="card"><div class="section"><h2>Pedidos de la fecha</h2><span class="strong" id="ordersCount">0</span></div><div id="recentOrders"></div></div>
 </section>
@@ -54,11 +60,15 @@
   <div class="card"><div id="dispatchList"></div></div>
 </section>
 
+<section class="view" id="view-cuentas">
+  <div class="card"><div class="section"><h2>Cuentas</h2></div><div class="cu-kpi" id="cuKpi"></div><div class="cu-actions"><button class="mini" id="cuExportTxt">Exportar cobro (.txt)</button><button class="mini" id="cuExportJson">Respaldo JSON</button></div></div>
+  <div class="card"><div id="cuentasList"></div></div>
+</section>
 <section class="view" id="view-mas">
   <div class="card"><div class="tabs"><button class="tab active" data-more="historial">Historial</button><button class="tab" data-more="config">Configuración</button><button class="tab" data-more="respaldo">Respaldo</button></div><div id="moreContent"></div></div>
 </section>
 </main>
-<nav class="nav"><button class="active" data-view="pedidos">Pedidos</button><button data-view="menu">Menú</button><button data-view="produccion">Producción</button><button data-view="despacho">Despacho</button><button data-view="mas">Más</button></nav>
+<nav class="nav"><button class="active" data-view="pedidos">Pedidos</button><button data-view="menu">Menú</button><button data-view="produccion">Producción</button><button data-view="despacho">Despacho</button><button data-view="cuentas">Cuentas</button><button data-view="mas">Más</button></nav>
 </div><div class="toast" id="toast"></div>
 <script>
 const DB_KEY='menuAppV3';
@@ -102,29 +112,21 @@ function countBy(arr,key){return arr.reduce((a,x)=>{const k=typeof key==='functi
 function dateLabel(d){return new Intl.DateTimeFormat('es-PE',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(new Date(d+'T12:00:00'))}
 function setHeader(){const d=$('#orderDate').value||iso();$('#headerSub').textContent=dateLabel(d)}
 function activeMenuOptions(date){const m=daily(date);return {entries:m.entryIds.map(getEntry).filter(Boolean),dishes:m.dishIds.map(getDish).filter(Boolean)}}
-function ensureTodayMenu(){const d='2026-07-25';const add=(list,obj)=>{if(!list.some(x=>x.id===obj.id))list.push(obj)};
- add(db.catalog.entries,{id:'e_rocoto',name:'Crema de rocoto',active:true});
+function ensureTodayMenu(){const d='2026-07-27';const add=(list,obj)=>{if(!list.some(x=>x.id===obj.id))list.push(obj)};
  add(db.catalog.entries,{id:'e_sopa_casa',name:'Sopa de casa',active:true});
  add(db.catalog.entries,{id:'e_ens_fresca',name:'Ensalada fresca',active:true});
- add(db.catalog.proteins,{id:'p_bisteck_hoy',name:'Bisteck',defaultPrep:'frito',altPreps:[],active:true});
- add(db.catalog.proteins,{id:'p_pollo_hoy',name:'Pollo frito',defaultPrep:'frito',altPreps:[],active:true});
+ add(db.catalog.entries,{id:'e_tequenos',name:'Tequeños',active:true});
  add(db.catalog.proteins,{id:'p_pescado_hoy',name:'Pescado',defaultPrep:'frito',altPreps:['sancochado'],active:true});
  add(db.catalog.proteins,{id:'p_pechuga_hoy',name:'Pechuga',defaultPrep:'frita',altPreps:['sancochada'],active:true});
- add(db.catalog.proteins,{id:'p_trucha_hoy',name:'Trucha',defaultPrep:'frita',altPreps:[],active:true});
- add(db.catalog.dishes,{id:'d_causa_hoy',name:'Causa de pollo con arroz',type:'closed',proteinIds:[],fixedProteinId:'',components:['Arroz'],fixedPrep:'',active:true});
- add(db.catalog.dishes,{id:'d_arroz_verde_hoy',name:'Arroz verde',type:'flex',proteinIds:['p_pollo_hoy','p_bisteck_hoy','p_pescado_hoy'],fixedProteinId:'',components:[],fixedPrep:'',active:true});
- add(db.catalog.dishes,{id:'d_crema_rocoto_hoy',name:'Crema de rocoto',type:'flex',proteinIds:['p_bisteck_hoy','p_pollo_hoy','p_pescado_hoy','p_pechuga_hoy'],fixedProteinId:'',components:[],fixedPrep:'',active:true});
- add(db.catalog.dishes,{id:'d_verduras_hoy',name:'Verduras cocidas',type:'flex',proteinIds:['p_pollo_hoy','p_pescado_hoy','p_bisteck_hoy'],fixedProteinId:'',components:[],fixedPrep:'',active:true});
- add(db.catalog.dishes,{id:'d_trucha_hoy',name:'Trucha con papa y choclo',type:'closed',proteinIds:[],fixedProteinId:'p_trucha_hoy',components:['Papa','Choclo'],fixedPrep:'frita',active:true,stockAlias:{kind:'protein',id:'p_trucha_hoy'}});
- // Corrige catálogos ya guardados por versiones anteriores sin borrar pedidos ni histórico.
- const verduras=db.catalog.dishes.find(x=>x.id==='d_verduras_hoy');if(verduras){verduras.name='Verduras cocidas';verduras.proteinIds=[...new Set([...(verduras.proteinIds||[]),'p_pechuga_hoy','p_pescado_hoy'])]}
- const cremaRocoto=db.catalog.dishes.find(x=>x.id==='d_crema_rocoto_hoy');if(cremaRocoto)cremaRocoto.proteinIds=[...new Set([...(cremaRocoto.proteinIds||[]),'p_bisteck_hoy','p_pollo_hoy','p_pescado_hoy','p_pechuga_hoy'])];
- const arrozVerde=db.catalog.dishes.find(x=>x.id==='d_arroz_verde_hoy');if(arrozVerde)arrozVerde.proteinIds=[...new Set([...(arrozVerde.proteinIds||[]),'p_bisteck_hoy','p_pollo_hoy','p_pescado_hoy','p_pechuga_hoy'])];
- const trucha=db.catalog.dishes.find(x=>x.id==='d_trucha_hoy');if(trucha){trucha.name='Trucha con papa y choclo';trucha.fixedProteinId='p_trucha_hoy';trucha.components=['Papa','Choclo'];trucha.stockAlias={kind:'protein',id:'p_trucha_hoy'}}
- if(!db.dailyMenus[d]||!db.dailyMenus[d].todaySeeded)db.dailyMenus[d]={entryIds:['e_rocoto','e_sopa_casa','e_ens_fresca'],dishIds:['d_causa_hoy','d_arroz_verde_hoy','d_crema_rocoto_hoy','d_verduras_hoy','d_trucha_hoy'],todaySeeded:true};
- if(!db.productionPlans[d])db.productionPlans[d]={dishes:{},proteins:{}};
- const plan=db.productionPlans[d];if(!plan.dishes)plan.dishes={};if(!plan.proteins)plan.proteins={};
- if(!plan.dependenciesV033){plan.dishes.d_arroz_verde_hoy=30;plan.dishes.d_verduras_hoy=12;plan.dishes.d_causa_hoy=38;plan.proteins.p_bisteck_hoy=15;plan.proteins.p_pollo_hoy=24;plan.proteins.p_trucha_hoy=14;delete plan.dishes.d_trucha_hoy;plan.dependenciesV033=true}
+ add(db.catalog.proteins,{id:'p_chuleta_hoy',name:'Chuleta',defaultPrep:'frita',altPreps:[],active:true});
+ add(db.catalog.proteins,{id:'p_atun_hoy',name:'Atún',defaultPrep:'',altPreps:[],active:true});
+ add(db.catalog.proteins,{id:'p_pollo_hoy',name:'Pollo',defaultPrep:'',altPreps:[],active:true});
+ add(db.catalog.dishes,{id:'d_lentejas_hoy',name:'Lentejas',type:'flex',proteinIds:['p_pescado_hoy','p_chuleta_hoy','p_pechuga_hoy'],fixedProteinId:'',components:[],fixedPrep:'',active:true});
+ add(db.catalog.dishes,{id:'d_saltado_atun_hoy',name:'Saltado de atún',type:'closed',proteinIds:[],fixedProteinId:'p_atun_hoy',components:[],fixedPrep:'',active:true});
+ add(db.catalog.dishes,{id:'d_sudado_pollo_hoy',name:'Sudado de pollo con yuca',type:'closed',proteinIds:[],fixedProteinId:'p_pollo_hoy',components:['Yuca'],fixedPrep:'',active:true});
+ add(db.catalog.dishes,{id:'d_ensalada_verd_hoy',name:'Ensalada de verdura',type:'flex',proteinIds:['p_pechuga_hoy','p_pescado_hoy'],fixedProteinId:'',components:[],fixedPrep:'',active:true});
+ add(db.catalog.dishes,{id:'d_yuca_hoy',name:'Yuca',type:'flex',proteinIds:['p_pescado_hoy','p_chuleta_hoy','p_pechuga_hoy'],fixedProteinId:'',components:[],fixedPrep:'',active:true});
+ if(!db.dailyMenus[d]||db.dailyMenus[d].seed!=='v041')db.dailyMenus[d]={entryIds:['e_sopa_casa','e_ens_fresca','e_tequenos'],dishIds:['d_lentejas_hoy','d_saltado_atun_hoy','d_sudado_pollo_hoy','d_ensalada_verd_hoy','d_yuca_hoy'],seed:'v041',todaySeeded:true};
 }
 function renderOrderForm(){const date=$('#orderDate').value;const m=activeMenuOptions(date);$('#noMenuNotice').classList.toggle('hidden',m.entries.length||m.dishes.length);$('#entry').innerHTML=m.entries.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('');$('#dish').innerHTML=m.dishes.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('');$('#saveOrder').disabled=!m.dishes.length;updateDishFields();setHeader()}
 function updateDishFields(){const dish=getDish($('#dish').value);if(!dish){$('#proteinField').classList.add('hidden');$('#prepField').classList.add('hidden');return}let proteins=[];if(dish.type==='flex')proteins=dish.proteinIds.map(getProtein).filter(Boolean);else if(dish.fixedProteinId)proteins=[getProtein(dish.fixedProteinId)].filter(Boolean);$('#proteinField').classList.toggle('hidden',dish.type!=='flex');$('#protein').innerHTML=proteins.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');updatePrep()}
@@ -161,10 +163,11 @@ function renderDispatch(){
    arr.forEach(o=>{const k=groupKey(o);(groups[k]??=[]).push(o)});
    const keys=Object.keys(groups).sort((a,b)=>a.localeCompare(b));
    $('#dispatchFilters').innerHTML='';
+   const openKeys=new Set([...document.querySelectorAll('#dispatchList details.fold[open]')].map(d=>d.getAttribute('data-key')));
    $('#dispatchList').innerHTML=keys.length?keys.map(k=>{
     const g=groups[k].sort((a,b)=>String(a.store||'').localeCompare(String(b.store||'')));
     const pending=g.filter(o=>!o.served).reduce((sum,o)=>sum+Number(o.qty||1),0);
-    return `<details class="fold"><summary><span>${esc(k)}</span><span>${pending} pendientes</span></summary><div class="fold-body">${splitStatus(g,false)}</div></details>`;
+    return `<details class="fold" data-key="${esc(k)}"${openKeys.has(k)?' open':''}><summary><span>${esc(k)}</span><span>${pending} pendientes</span></summary><div class="fold-body">${splitStatus(g,false)}</div></details>`;
    }).join(''):bolsaEmpty(date,all);
    return;
   }
@@ -195,8 +198,68 @@ function renderConfig(){const tabs=`<div class="tabs"><button class="tab ${confi
 function catalogCard(x,type){let det='';if(type==='protein')det=`Predeterminada: ${esc(x.defaultPrep||'—')} · Alternativas: ${esc((x.altPreps||[]).join(', ')||'ninguna')}`;if(type==='dish'){const ps=x.type==='flex'?x.proteinIds.map(id=>getProtein(id)?.name).filter(Boolean).join(', '):(getProtein(x.fixedProteinId)?.name||'sin proteína fija');det=`${x.type==='flex'?'Combinable':'Cerrado'} · ${esc(ps)}${x.components?.length?' · '+esc(x.components.join(', ')):''}`;}return `<div class="item-card"><div class="section"><div><b>${esc(x.name)}</b><div class="details">${det}</div></div><span class="badge">${x.active?'Activo':'Inactivo'}</span></div><div class="item-actions"><button class="secondary" data-toggle-cat="${type}:${x.id}">${x.active?'Desactivar':'Activar'}</button><button class="secondary" data-edit-cat="${type}:${x.id}">Editar</button><button class="secondary danger" data-delete-cat="${type}:${x.id}">Eliminar</button></div></div>`}
 function renderBackup(){$('#moreContent').innerHTML=`<div class="section"><h2>Respaldo</h2></div><div class="note">Los datos permanecen en esta tablet al cerrar la app, pero conviene descargar un respaldo con frecuencia.</div><div class="toolbar"><button class="secondary" id="exportJson">Exportar respaldo</button><label class="secondary" style="text-align:center">Importar respaldo<input type="file" id="importJson" accept="application/json" class="hidden"></label></div><br><button class="secondary" id="exportCsv">Exportar pedidos CSV</button>`}
 function renderStores(){const stores=[...new Set([...db.stores,...db.orders.map(o=>o.store)])].filter(Boolean).sort();$('#storesList').innerHTML=stores.map(s=>`<option value="${esc(s)}"></option>`).join('')}
-function renderAll(){renderStores();renderOrderForm();renderRecent();renderDailyMenu();renderProduction();renderDispatch();renderMore()}
-function nav(view){$$('.view').forEach(v=>v.classList.toggle('active',v.id===`view-${view}`));$$('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===view));if(view==='menu')renderDailyMenu();if(view==='produccion'){autoDate('productionDate');renderProduction();}if(view==='despacho'){autoDate('dispatchDate');renderDispatch();}if(view==='mas')renderMore()}
+const ACCOUNTS_SEED=[{n:"102CB",f:"1",s:12},{n:"103B",f:"1",s:24},{n:"108CB",f:"1",s:12},{n:"110CB",f:"1",s:62.5},{n:"111C",f:"1",s:12},{n:"111CB",f:"1",s:12},{n:"134B",f:"1",s:12},{n:"137B",f:"1",s:60},{n:"142D",f:"1",s:12},{n:"143D",f:"1",s:12},{n:"Amparo Gisset",f:"1",s:3},{n:"Gisset",f:"1",s:43.5},{n:"Gisset Amparo",f:"1",s:5},{n:"Gisset Flor",f:"1",s:2.5},{n:"202B",f:"2",s:10.5},{n:"209C",f:"2",s:44},{n:"210AB",f:"2",s:22},{n:"233B",f:"2",s:12},{n:"236B",f:"2",s:5},{n:"245D",f:"2",s:23},{n:"253B",f:"2",s:12},{n:"257B",f:"2",s:12},{n:"269B",f:"2",s:35},{n:"276B",f:"2",s:12},{n:"Covins",f:"2",s:18},{n:"Pers 209BB",f:"2",s:12},{n:"Pini",f:"2",s:12},{n:"303B",f:"3",s:712.5},{n:"307BB",f:"3",s:42.5},{n:"307CB",f:"3",s:36},{n:"308A",f:"3",s:24},{n:"308AB",f:"3",s:23},{n:"308B",f:"3",s:48},{n:"308BB",f:"3",s:18},{n:"309B",f:"3",s:140.5},{n:"309BB",f:"3",s:17},{n:"309CB",f:"3",s:872.5},{n:"313C",f:"3",s:41.5},{n:"317B",f:"3",s:30.5},{n:"317C",f:"3",s:12},{n:"317D",f:"3",s:18},{n:"319C",f:"3",s:12},{n:"319CB",f:"3",s:-17},{n:"322D",f:"3",s:24},{n:"326C",f:"3",s:12},{n:"330B",f:"3",s:43},{n:"338B",f:"3",s:51},{n:"338BB",f:"3",s:66},{n:"354B",f:"3",s:9.5},{n:"357D",f:"3",s:30},{n:"372B",f:"3",s:24},{n:"373B",f:"3",s:8},{n:"Amel",f:"3",s:6},{n:"Bella",f:"3",s:33.5},{n:"Carlos",f:"3",s:235},{n:"Carmen",f:"3",s:5.5},{n:"Eliane",f:"3",s:9},{n:"Ever",f:"3",s:5},{n:"Fredy",f:"3",s:31},{n:"Gaston Carmen",f:"3",s:11},{n:"Jose",f:"3",s:80},{n:"Magaly",f:"3",s:16},{n:"Patty",f:"3",s:76},{n:"Ronald",f:"3",s:45.5},{n:"Rosita",f:"3",s:84},{n:"Walter",f:"3",s:10},{n:"406A",f:"4",s:24},{n:"411A",f:"4",s:12},{n:"415A",f:"4",s:24},{n:"416BB",f:"4",s:24},{n:"442E",f:"4",s:66},{n:"4to Roxana",f:"4",s:30},{n:"Norma",f:"4",s:24},{n:"Uchu",f:"4",s:36},{n:"Canepa 131",f:"Fuera",s:24},{n:"Canepa 5",f:"Fuera",s:12},{n:"Leo Galerias",f:"Fuera",s:26},{n:"Mezanine",f:"Fuera",s:72},{n:"Rosa",f:"Fuera",s:55}];
+/* ===== CUENTAS UNIFICADO v1.0 ===== */
+const UNIFY_DATE='2026-07-27';
+const ALIAS_C={'gisset':'Gisset Flor','gisset flor':'Gisset Flor','flor gisset':'Gisset Flor','gisset amparo':'Gisset Amparo','amparo gisset':'Gisset Amparo'};
+function keyName(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().replace(/\s+/g,' ').toLocaleLowerCase('es-PE')}
+function canonical(v){const raw=String(v||'').trim().replace(/\s+/g,' ');return ALIAS_C[keyName(raw)]||raw}
+function money(n){n=Math.round(n*100)/100;return 'S/ '+n.toLocaleString('es-PE',{minimumFractionDigits:(n%1?2:0),maximumFractionDigits:2})}
+const PRICES={completo:12,solo:11,mesa:13,trucha:18};
+function orderPrice(o){const dish=(o.dishName||'').toLowerCase();const qty=Number(o.qty||1);let u;if(dish.includes('trucha'))u=PRICES.trucha;else if(normalizeDelivery(o.delivery)==='mesa')u=PRICES.mesa;else u=o.saleType==='solo'?PRICES.solo:PRICES.completo;return u*qty}
+function floorOf(name){const m=String(name).match(/\d/);return m?m[0]:'?'}
+let cuOpen=new Set();
+function accState(k){db.acc=db.acc||{};if(!db.acc[k])db.acc[k]={status:'pendiente',recibido:0,note:''};return db.acc[k]}
+function buildAccounts(){
+ const map=new Map();
+ const get=(name,floor)=>{const c=canonical(name),k=keyName(c);if(!map.has(k))map.set(k,{key:k,name:c,floor:floor||floorOf(c),anterior:0,orders:[],extras:[]});const a=map.get(k);if(floor&&a.floor==='?')a.floor=floor;return a};
+ ACCOUNTS_SEED.forEach(s=>{get(s.n,s.f).anterior+=s.s});
+ db.orders.filter(o=>o.date>=UNIFY_DATE&&o.store).forEach(o=>get(o.store).orders.push(o));
+ db.accExtra=db.accExtra||{};
+ Object.entries(db.accExtra).forEach(([k,list])=>{const a=[...map.values()].find(x=>x.key===k)||get(k);(list||[]).forEach(e=>a.extras.push(e))});
+ return [...map.values()];
+}
+function accTotal(a){return a.anterior+a.orders.reduce((s,o)=>s+orderPrice(o),0)+a.extras.reduce((s,e)=>s+Number(e.amount||0),0)}
+function accCobrado(a){const st=accState(a.key);if(st.status==='pagado')return accTotal(a);if(st.status==='parcial')return st.recibido;return 0}
+function accRow(a){
+ const st=accState(a.key),total=accTotal(a),saldo=total-st.recibido;
+ const cls=st.status==='pagado'?'done':st.status==='parcial'?'parcial':'';
+ const open=cuOpen.has(a.key);
+ let tag='';if(st.status==='pagado')tag='<span class="atag ok">Pagó</span>';else if(st.status==='parcial')tag='<span class="atag am">Saldo '+money(saldo)+'</span>';
+ let det='';
+ if(open){
+  const lines=[];
+  if(a.anterior)lines.push(`<div class="line"><span>Saldo anterior</span><span>${money(a.anterior)}</span></div>`);
+  a.orders.forEach(o=>lines.push(`<div class="line"><span>${esc(o.dishName||'')}${o.proteinName?' + '+esc(o.proteinName):''}${o.saleType==='solo'?' · solo':''}${normalizeDelivery(o.delivery)==='mesa'?' · mesa':''}${Number(o.qty||1)>1?' ×'+o.qty:''}</span><span>${money(orderPrice(o))}</span></div>`));
+  a.extras.forEach((e,i)=>lines.push(`<div class="line"><span>${esc(e.concept||'Extra')}</span><span>${money(e.amount)} <button class="mini danger" data-cu-delx="${a.key}::${i}">×</button></span></div>`));
+  lines.push(`<div class="line" style="font-weight:800"><span>Total</span><span>${money(total)}</span></div>`);
+  let res='';if(st.status==='pagado'&&st.recibido>total)res=`<div class="cu-res vuelto">Vuelto: ${money(st.recibido-total)}</div>`;else if(st.status==='parcial')res=`<div class="cu-res saldo">Falta: ${money(saldo)}</div>`;
+  det=`<div class="acc-detail">${lines.join('')}
+   <div class="cu-pay"><label>¿Con cuánto pagó?</label><div class="cu-row"><input type="number" inputmode="decimal" placeholder="0" value="${st.recibido||''}" data-cu-recibi="${a.key}"><button class="mini ok" data-cu-exact="${a.key}">Pagó exacto</button><button class="mini" data-cu-clear="${a.key}">Borrar</button></div>${res}</div>
+   <div class="cu-pay"><label>Agregar consumo (bebida, pan, lonche…)</label><div class="cu-row"><input placeholder="Concepto" data-cu-xc="${a.key}"><input type="number" inputmode="decimal" placeholder="S/" style="max-width:80px" data-cu-xa="${a.key}"><button class="mini ok" data-cu-addx="${a.key}">+ Agregar</button></div></div>
+   <div class="cu-pay"><label>Observación</label><input placeholder="Ej: paga el viernes" value="${esc(st.note||'')}" data-cu-note="${a.key}"></div>
+  </div>`;
+ }
+ return `<div class="order acc ${cls}${open?' open':''}" data-key="${esc(a.key)}"><div class="check" data-cu-check="${a.key}">${st.status==='pagado'?'✓':st.status==='parcial'?'½':''}</div><div class="grow" data-cu-open="${a.key}"><div class="strong">${esc(a.name)}${tag}</div><div class="details">Piso ${esc(a.floor)}</div></div><div class="samt">${money(total)}</div>${det}</div>`;
+}
+function renderCuentas(){
+ if(!$('#cuentasList'))return;
+ const accts=buildAccounts().filter(a=>Math.abs(accTotal(a))>0.001);
+ let grand=0,cob=0,pag=0;accts.forEach(a=>{grand+=accTotal(a);cob+=accCobrado(a);if(accState(a.key).status==='pagado')pag++});
+ $('#cuKpi').innerHTML=`<div class="kpi"><span>Cobrado</span><b>${money(cob)}</b></div><div class="kpi"><span>Falta</span><b>${money(grand-cob)}</b></div><div class="kpi"><span>Pagadas</span><b>${pag}/${accts.length}</b></div>`;
+ const floors=[...new Set(accts.map(a=>a.floor))].sort();
+ const openF=new Set([...document.querySelectorAll('#cuentasList details.fold[open]')].map(d=>d.getAttribute('data-key')));
+ $('#cuentasList').innerHTML=floors.map(f=>{
+  const rows=accts.filter(a=>a.floor===f).sort((x,y)=>x.name.localeCompare(y.name));
+  const pend=rows.reduce((s,a)=>s+(accTotal(a)-accCobrado(a)),0);
+  const lbl=f==='Fuera'?'Fuera de galería':f==='?'?'Sin piso':'Piso '+f;
+  return `<details class="fold" data-key="fl-${esc(f)}"${openF.has('fl-'+f)?' open':''}><summary><span>${lbl}</span><span>${money(pend)}</span></summary><div class="fold-body">${rows.map(accRow).join('')}</div></details>`;
+ }).join('')||'<div class="empty">Aún no hay cuentas. Registra pedidos y aquí saldrán con su precio.</div>';
+}
+function cuExportJSON(){download('respaldo-unificado-'+iso()+'.json',JSON.stringify(db,null,2))}
+function cuExportTxt(){const accts=buildAccounts().filter(a=>accTotal(a)-accCobrado(a)>0.001).sort((x,y)=>String(x.floor).localeCompare(String(y.floor))||x.name.localeCompare(y.name));let t='COBRANZA '+iso()+'\n\n';let cf='';accts.forEach(a=>{if(a.floor!==cf){cf=a.floor;t+='\n== Piso '+cf+' ==\n'}const st=accState(a.key);t+=a.name+' : '+money(accTotal(a)-st.recibido)+(st.note?'  ('+st.note+')':'')+'\n'});download('cobro-'+iso()+'.txt',t,'text/plain')}
+function renderAll(){renderStores();renderOrderForm();renderRecent();renderDailyMenu();renderProduction();renderDispatch();renderCuentas();renderMore()}
+function nav(view){$$('.view').forEach(v=>v.classList.toggle('active',v.id===`view-${view}`));$$('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===view));if(view==='menu')renderDailyMenu();if(view==='produccion'){autoDate('productionDate');renderProduction();}if(view==='despacho'){autoDate('dispatchDate');renderDispatch();}if(view==='cuentas')renderCuentas();if(view==='mas')renderMore()}
 function download(name,text,type='application/json'){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
 // init dates
 const today=iso();ensureTodayMenu();['orderDate','menuDate','productionDate','dispatchDate'].forEach(id=>$('#'+id).value=today);if(!db.dailyMenus[today])db.dailyMenus[today]={entryIds:['e1','e2','e3'],dishIds:['d1','d2','d3','d4']};saveDB(false);setZone(inferZone($('#store').value));
@@ -206,8 +269,8 @@ $('#qtyMinus').onclick=()=>{$('#qtyValue').textContent=qty=Math.max(1,qty-1)};$(
 $$('#deliverySeg button').forEach(b=>b.onclick=()=>{delivery=b.dataset.value;$$('#deliverySeg button').forEach(x=>x.classList.toggle('active',x===b))});
 $$('#saleTypeSeg button').forEach(b=>b.onclick=()=>{saleType=b.dataset.value;$$('#saleTypeSeg button').forEach(x=>x.classList.toggle('active',x===b));$('#entryField').classList.toggle('hidden',saleType==='solo')});
 $('#store').oninput=()=>setZone(inferZone($('#store').value));$$('#zoneSeg button').forEach(b=>b.onclick=()=>setZone(b.dataset.zone));$('#dish').onchange=updateDishFields;$('#protein').onchange=updatePrep;$('#orderDate').onchange=()=>{renderOrderForm();renderRecent()};
-function saveCurrentOrder(continueSameStore=false){const store=$('#store').value.trim().toUpperCase(),date=$('#orderDate').value,dish=getDish($('#dish').value);if(!store)return toast('Ingresa la tienda');if(!dish)return toast('Configura el menú del día');const entry=getEntry($('#entry').value);const protein=dish.type==='flex'?getProtein($('#protein').value):getProtein(dish.fixedProteinId);const prep=$('#prep').value||'';db.orders.push({id:uid(),date,createdAt:new Date().toISOString(),store,qty,delivery,saleType,entryId:saleType==='completo'?entry?.id:'',entryName:saleType==='completo'?entry?.name:'',dishId:dish.id,dishName:dish.name,proteinId:protein?.id||'',proteinName:protein?.name||'',prepName:prep,defaultPrep:dish.fixedPrep||protein?.defaultPrep||'',components:deepClone(dish.components||[]),noRice:$('#noRice').checked,priority:$('#priority').checked,zone:chosenZone,served:false});if(!db.stores.includes(store))db.stores.push(store);if(!continueSameStore)$('#store').value='';$('#notes').value='';$('#noRice').checked=false;$('#priority').checked=false;qty=1;$('#qtyValue').textContent='1';saveDB();toast(continueSameStore?'Variante guardada; registra la siguiente':'Pedido guardado')}
-$('#saveOrder').onclick=()=>saveCurrentOrder(false);$('#saveAndContinue').onclick=()=>saveCurrentOrder(true);$('#loadSimulation').onclick=loadNotebookSimulation;
+function saveCurrentOrder(continueSameStore=false){const store=canonical($('#store').value),date=$('#orderDate').value,dish=getDish($('#dish').value);if(!store)return toast('Ingresa la tienda');if(!dish)return toast('Configura el menú del día');const entry=getEntry($('#entry').value);const protein=dish.type==='flex'?getProtein($('#protein').value):getProtein(dish.fixedProteinId);const prep=$('#prep').value||'';db.orders.push({id:uid(),date,createdAt:new Date().toISOString(),store,qty,delivery,saleType,entryId:saleType==='completo'?entry?.id:'',entryName:saleType==='completo'?entry?.name:'',dishId:dish.id,dishName:dish.name,proteinId:protein?.id||'',proteinName:protein?.name||'',prepName:prep,defaultPrep:dish.fixedPrep||protein?.defaultPrep||'',components:deepClone(dish.components||[]),noRice:$('#noRice').checked,priority:$('#priority').checked,zone:chosenZone,served:false});if(!db.stores.includes(store))db.stores.push(store);if(!continueSameStore)$('#store').value='';$('#notes').value='';$('#noRice').checked=false;$('#priority').checked=false;qty=1;$('#qtyValue').textContent='1';saveDB();toast(continueSameStore?'Variante guardada; registra la siguiente':'Pedido guardado')}
+$('#saveOrder').onclick=()=>saveCurrentOrder(false);$('#saveAndContinue').onclick=()=>saveCurrentOrder(true);
 $('#recentOrders').onclick=e=>{const del=e.target.closest('[data-delete-order]'),ed=e.target.closest('[data-edit-order]');if(del){if(confirm('¿Eliminar este pedido?')){db.orders=db.orders.filter(o=>o.id!==del.dataset.deleteOrder);saveDB()}}if(ed){const o=db.orders.find(x=>x.id===ed.dataset.editOrder);if(!o)return;const n=prompt('Nueva cantidad:',o.qty);if(n&&Number(n)>0){o.qty=Number(n);saveDB();toast('Cantidad actualizada')}}};
 $('#menuDate').onchange=renderDailyMenu;$('#saveDailyMenu').onclick=()=>{const d=$('#menuDate').value;db.dailyMenus[d]={entryIds:$$('[data-daily-entry]:checked').map(x=>x.dataset.dailyEntry),dishIds:$$('[data-daily-dish]:checked').map(x=>x.dataset.dailyDish)};saveDB();toast('Menú guardado')};
 $('#copyPrevious').onclick=()=>{const d=$('#menuDate').value;const prev=Object.keys(db.dailyMenus).filter(x=>x<d).sort().pop();if(!prev)return toast('No hay un menú anterior');db.dailyMenus[d]=deepClone(db.dailyMenus[prev]);saveDB();toast('Menú anterior copiado')};
@@ -217,5 +280,15 @@ $('#dispatchDate').onchange=renderDispatch;$$('[data-dispatch]').forEach(b=>b.on
 $$('[data-more]').forEach(b=>b.onclick=()=>{moreTab=b.dataset.more;$$('[data-more]').forEach(x=>x.classList.toggle('active',x===b));renderMore()});
 $('#moreContent').onclick=e=>{const open=e.target.closest('[data-open-date]');if(open){$('#orderDate').value=open.dataset.openDate;nav('pedidos');renderAll();return}const ct=e.target.closest('[data-config]');if(ct){configTab=ct.dataset.config;renderMore();return}const tog=e.target.closest('[data-toggle-cat]');if(tog){const [type,id]=tog.dataset.toggleCat.split(':');const list=type==='entry'?db.catalog.entries:type==='protein'?db.catalog.proteins:db.catalog.dishes;const x=list.find(y=>y.id===id);x.active=!x.active;saveDB();return}const del=e.target.closest('[data-delete-cat]');if(del){const [type,id]=del.dataset.deleteCat.split(':');if(!confirm('¿Eliminar del catálogo? El histórico existente no se borrará.'))return;const key=type==='entry'?'entries':type==='protein'?'proteins':'dishes';db.catalog[key]=db.catalog[key].filter(x=>x.id!==id);saveDB();return}const ed=e.target.closest('[data-edit-cat]');if(ed){const [type,id]=ed.dataset.editCat.split(':');const list=type==='entry'?db.catalog.entries:type==='protein'?db.catalog.proteins:db.catalog.dishes;const x=list.find(y=>y.id===id);const name=prompt('Nombre:',x.name);if(name){x.name=name.trim();if(type==='protein'){const def=prompt('Preparación predeterminada:',x.defaultPrep||'');if(def!==null)x.defaultPrep=def.trim();const alts=prompt('Alternativas separadas por coma:',(x.altPreps||[]).join(', '));if(alts!==null)x.altPreps=alts.split(',').map(s=>s.trim()).filter(Boolean)}saveDB()}return}if(e.target.id==='addEntry'){const n=$('#newEntryName').value.trim();if(n){db.catalog.entries.push({id:uid(),name:n,active:true});saveDB();toast('Entrada agregada')}return}if(e.target.id==='addProtein'){const n=$('#newProteinName').value.trim();if(n){db.catalog.proteins.push({id:uid(),name:n,defaultPrep:$('#newProteinDefault').value.trim(),altPreps:$('#newProteinAlts').value.split(',').map(s=>s.trim()).filter(Boolean),active:true});saveDB();toast('Proteína agregada')}return}if(e.target.id==='addDish'){const n=$('#newDishName').value.trim();if(n){const type=$('#newDishType').value;db.catalog.dishes.push({id:uid(),name:n,type,proteinIds:$$('#newDishProteins input:checked').map(x=>x.value),fixedProteinId:$('#newDishFixed').value,components:$('#newDishComponents').value.split(',').map(s=>s.trim()).filter(Boolean),fixedPrep:$('#newDishPrep').value.trim(),active:true});saveDB();toast('Fondo agregado')}return}if(e.target.id==='exportJson'){download(`menu-app-respaldo-${iso()}.json`,JSON.stringify(db,null,2));return}if(e.target.id==='exportCsv'){const rows=[['fecha','tienda','cantidad','entrega','tipo','entrada','fondo','proteina','preparacion','sin_arroz','prioridad','zona','servido'],...db.orders.map(o=>[o.date,o.store,o.qty,o.delivery,o.saleType,o.entryName,o.dishName,o.proteinName,o.prepName,o.noRice,o.priority,o.zone,o.served])];download(`pedidos-${iso()}.csv`,rows.map(r=>r.map(v=>`"${String(v??'').replaceAll('"','""')}"`).join(',')).join('\n'),'text/csv');return}};
 $('#moreContent').onchange=e=>{if(e.target.id==='importJson'){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const imported=JSON.parse(r.result);if(!imported.catalog||!imported.orders)throw 0;if(confirm('Esto reemplazará los datos actuales. ¿Continuar?')){db=imported;saveDB();toast('Respaldo importado')}}catch{alert('Archivo no válido')}};r.readAsText(f)}};
+if($('#cuentasList')){
+$('#cuentasList').addEventListener('click',e=>{const g=t=>e.target.closest('[data-cu-'+t+']')?.getAttribute('data-cu-'+t);let key;
+ if(key=g('check')){const a=buildAccounts().find(x=>x.key===key);const st=accState(key);st.status=st.status==='pagado'?'pendiente':'pagado';st.recibido=st.status==='pagado'?accTotal(a):0;saveDB();return}
+ if(key=g('open')){cuOpen.has(key)?cuOpen.delete(key):cuOpen.add(key);renderCuentas();return}
+ if(key=g('exact')){const a=buildAccounts().find(x=>x.key===key);const st=accState(key);st.status='pagado';st.recibido=accTotal(a);saveDB();return}
+ if(key=g('clear')){const st=accState(key);st.status='pendiente';st.recibido=0;saveDB();return}
+ const ax=e.target.closest('[data-cu-addx]');if(ax){const k=ax.getAttribute('data-cu-addx'),row=ax.closest('.cu-row');const c=row.querySelector('[data-cu-xc]').value.trim(),am=Number(row.querySelector('[data-cu-xa]').value)||0;if(am){db.accExtra=db.accExtra||{};(db.accExtra[k]=db.accExtra[k]||[]).push({concept:c||'Extra',amount:am,date:iso()});saveDB()}return}
+ const dx=e.target.closest('[data-cu-delx]');if(dx){const [k,i]=dx.getAttribute('data-cu-delx').split('::');db.accExtra[k].splice(Number(i),1);saveDB();return}});
+$('#cuentasList').addEventListener('change',e=>{const r=e.target.closest('[data-cu-recibi]');if(r){const k=r.getAttribute('data-cu-recibi'),a=buildAccounts().find(x=>x.key===k),st=accState(k),v=Number(r.value)||0,tot=accTotal(a);if(v<=0){st.status='pendiente';st.recibido=0}else if(v>=tot){st.status='pagado';st.recibido=v}else{st.status='parcial';st.recibido=v}saveDB();return}const n=e.target.closest('[data-cu-note]');if(n){accState(n.getAttribute('data-cu-note')).note=n.value;saveDB(false)}});
+$('#cuExportJson').onclick=cuExportJSON;$('#cuExportTxt').onclick=cuExportTxt;}
 if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js');renderAll();
 </script></body></html>
